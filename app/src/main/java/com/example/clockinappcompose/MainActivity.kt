@@ -85,12 +85,24 @@ fun EnterYourName() {
                 .padding(horizontal = 32.dp, vertical = 16.dp)
         ) {
             Text(
-                text = "Save To Storage",
+                text = "Save Name",
                 color = Color.White,
                 fontSize = 20.sp
-//                fontWeight = FontWeight.Bold
 
             )
+        }
+        Button(
+            onClick = { /*TODO*/ },
+            shape = CutCornerShape(10),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    text = "View Record",
+                    color = Color.White,
+                    fontSize = 20.sp
+                )
         }
     }
 }
