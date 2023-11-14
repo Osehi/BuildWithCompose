@@ -33,9 +33,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.clockinappcompose.model.Guest
+import com.example.clockinappcompose.storage.TemporaryStorage
 import com.example.clockinappcompose.ui.theme.ClockInAppComposeTheme
+import com.example.clockinappcompose.utilities.Utilities
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var temporaryStorage: TemporaryStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,6 +51,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // initialize storage
+                    temporaryStorage = TemporaryStorage()
                     EnterYourName()
                 }
             }
@@ -55,6 +63,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterYourName() {
+    val temporaryStorage = TemporaryStorage()
     val contextForToast = LocalContext.current.applicationContext
     var value by remember {
         mutableStateOf("")
@@ -77,7 +86,15 @@ fun EnterYourName() {
                 .padding(horizontal = 32.dp)
             )
         Button(
-            onClick = { Toast.makeText(contextForToast, value, Toast.LENGTH_LONG).show() },
+            onClick = {
+//                Toast.makeText(contextForToast, value, Toast.LENGTH_LONG).show();
+                val capturedDate = Utilities.getInstantDate()
+                val capturedTime = Utilities.getInstantTime()
+                val myGuest = Guest(value, capturedDate, capturedTime)
+                temporaryStorage.addGuest(myGuest);
+                Toast.makeText(contextForToast, "My Gust is ${myGuest}", Toast.LENGTH_LONG).show()
+
+                      },
             shape = CutCornerShape(10),
             modifier = Modifier
                 .clickable {}
