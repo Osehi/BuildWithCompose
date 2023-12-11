@@ -25,24 +25,28 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.clockinappcompose.model.Guest
 import com.example.clockinappcompose.storage.TemporaryStorage
 import com.example.clockinappcompose.utilities.Utilities
 
+//lateinit var navController: NavController
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        EnterYourName()
+        EnterYourName(navController)
 
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EnterYourName() {
+fun EnterYourName(receivedNav: NavController) {
     val temporaryStorage = TemporaryStorage()
     val contextForToast = LocalContext.current.applicationContext
     var value by remember {
@@ -91,11 +95,14 @@ fun EnterYourName() {
         Button(
             onClick = {
                 // to navigate to another screen
+//                toNavigateToDisplayScreen.invoke()
+                      receivedNav.navigate(route = Screen.DisplayScreen.route)
             },
             shape = CutCornerShape(10),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp)
+                .padding(horizontal = 32.dp),
+
         ) {
             Text(
                 text = "View Record",
@@ -109,5 +116,6 @@ fun EnterYourName() {
 @Composable
 @Preview(showBackground = true)
 fun HomeScreenPreview() {
-    HomeScreen()
+    val navController = NavController(LocalContext.current.applicationContext)
+    HomeScreen(navController)
 }
